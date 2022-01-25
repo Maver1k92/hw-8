@@ -1,14 +1,15 @@
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-public class HashMap<K, V> {
+public class HashMap<K, V>  implements HashMapMethods<K, V>{
     private Node<K, V>[] hashTable;
     private int size = 0;
     private float threshold;
 
-    public void push(K key, V value){
-        Node<K,V> newNode = new Node<>(key,value);
-    }
+   // public void push(K key, V value){
+       // Node<K,V> newNode = new Node<>(key,value);
+   // }
 
     private int hash(Node<K, V> node){
         return node.hashCode() % hashTable.length;
@@ -19,6 +20,36 @@ public class HashMap<K, V> {
         hash = hash * 17 + key.hashCode();
        return hash % hashTable.length;
    }
+
+    @Override
+    public boolean put(K key, V value) {
+        return false;
+    }
+
+    @Override
+    public void remove(K key) {
+
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public V get(K key) {
+        return null;
+    }
+
+    @Override
+    public Iterator<V> iterator() {
+        return null;
+    }
 
     private class Node<K, V>{
         private List<Node<K, V>> nodes;
