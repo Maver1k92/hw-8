@@ -12,19 +12,17 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
         threshold = hashTable.length * 0.75f;
     }
 
-   // public void push(K key, V value){
-       // Node<K,V> newNode = new Node<>(key,value);
-   // }
+
 
     private int hash(Node<K, V> node){
         return node.hashCode() % hashTable.length;
     }
 
-   private int hash(final  K key){
+    private int hash(final  K key){
         int hash = 31;
         hash = hash * 17 + key.hashCode();
-       return hash % hashTable.length;
-   }
+        return hash % hashTable.length;
+    }
 
     @Override
     public boolean put(K key, V value) {
@@ -39,10 +37,11 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
         if(hashTable[index] == null){
             return simpleAdd(index, newNode);
         }
-        List<Node<K, V>> NodeList = hashTable[index].getNodes();
+
+        List<Node<K, V>> nodeList = hashTable[index].getNodes();
         for(Node<K, V> node : nodeList){
             if(keyExistButValueNew(node,newNode,value) ||
-            collisionProcessing(node, newNode, nodeList)){
+                    collisionProcessing(node, newNode, nodeList)){
                 return true;
             }
         }
@@ -61,7 +60,7 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
             final Node<K, V> newNode,
             final V value){
         if(newNode.hashCode() == nodeFromList.hashCode() &&
-        !newNode.getValue().equals(nodeFromList.getValue())){
+                !newNode.getValue().equals(nodeFromList.getValue())){
             nodeFromList.setValue(value);
             return true;
         }
@@ -73,8 +72,8 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
             final Node<K,V> newNode,
             final List<Node<K, V>> nodes){
         if(newNode.hashCode() == nodeFromList.hashCode()&&
-        !Objects.equals(newNode.key, nodeFromList.key)&&
-        !Objects.equals(newNode.value, nodeFromList.value)){
+                !Objects.equals(newNode.key, nodeFromList.key)&&
+                !Objects.equals(newNode.value, nodeFromList.value)){
             nodes.add(newNode);
             size++;
             return true;
@@ -89,7 +88,7 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
         for (Node<K, V> node : oldHashTable){
             if(node != null){
                 for (Node<K, V> n :node.getNodes()){
-                    insert(n.key, n.value);
+                    put(n.key, n.value);
                 }
             }
         }
@@ -105,12 +104,20 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
             hashTable[index].getNodes().remove(0);
             return true;
         }
-        return false;
 
+        List<Node<K, V>> nodeList = hashTable[index].getNodes();
+        for(Node<K, V> node : nodeList){
+            if(key.equals(node.getKey())){
+                nodeList.remove(node);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public void clear() {
+
 
     }
 
@@ -123,7 +130,7 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
     public V get(K key) {
         int index = hash(key);
         if(index < hashTable.length &&
-        hashTable[index] != null){
+                hashTable[index] != null){
 
             List<Node<K, V>> list = hashTable[index].getNodes();
             for (Node<K, V> node : list){
@@ -137,7 +144,41 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
 
     @Override
     public Iterator<V> iterator() {
-        return null;
+        return new Iterator<V>() {
+            int counterArray = 0;
+            int valueCounter = 0;
+            Iterator<Node<K,V>> subIterator = null;
+
+            @Override
+            public boolean hasNext() {
+                if(valueCounter ==size)
+                    return false;
+
+                if (subIterator ==null || !subIterator.hasNext()){
+                    if(moveToNextCell()){
+                        subIterator = hashTable[counterArray].getNodes().iterator();
+                    }else {
+                        return false;
+                    }
+                }
+
+                return subIterator.hasNext();
+            }
+
+            private boolean moveToNextCell(){
+                counterArray++;
+                while (hashTable[counterArray] == null){
+                    counterArray++;
+                }
+                return hashTable[counterArray] != null;
+            }
+
+            @Override
+            public V next() {
+                valueCounter++;
+                return subIterator.next().getValue();
+            }
+        };
     }
 
     private class Node<K, V>{
@@ -182,18 +223,16 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
 
         @Override
         public boolean equals(Object obj) {
-                if(this == obj)
-                    return true;
+            if(this == obj)
+                return true;
 
-                if(obj instanceof Node){
-                    Node<K, V> node = (Node) obj ;
-                    return (Objects.equals(key, node.getKey()) &&
-                            Objects.equals(value, node.getValue()) ||
-                            Objects.equals(hash,node.hashCode()));
-                }
-                return false;
+            if(obj instanceof Node){
+                Node<K, V> node = (Node) obj ;
+                return (Objects.equals(key, node.getKey()) &&
+                        Objects.equals(value, node.getValue()) ||
+                        Objects.equals(hash,node.hashCode()));
             }
+            return false;
+        }
     }
 }
-https://www.youtube.com/watch?v=BXiOn1Im-Kc&list=PL7Bt6mWpiiza-bvhK-O1dNjIITX7nReHk&index=9
-3.04
