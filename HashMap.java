@@ -1,8 +1,17 @@
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
 public class HashMap<K, V>  implements HashMapMethods<K, V>{
+
+    public static void main(String[] args) {
+        HashMap<String, String> strings = new HashMap<>();
+        strings.put("a", "b");
+        strings.put("c", "d");
+        System.out.println(strings.get("a"));
+        System.out.println(strings.size);
+        System.out.println(strings.remove("a"));
+        System.out.println(strings.get("a"));
+    }
+
     private Node<K, V>[] hashTable;
     private int size = 0;
     private float threshold;
@@ -32,7 +41,7 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
         }
 
         Node<K, V> newNode = new Node<>(key, value);
-        int index = newNode.hash();
+        int index = hash(key);
 
         if(hashTable[index] == null){
             return simpleAdd(index, newNode);
@@ -101,7 +110,7 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
             return false;
 
         if (hashTable[index].getNodes().size() == 1) {
-            hashTable[index].getNodes().remove(0);
+            hashTable[index] = null ;
             return true;
         }
 
@@ -118,7 +127,6 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
     @Override
     public void clear() {
 
-
     }
 
     @Override
@@ -131,6 +139,10 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
         int index = hash(key);
         if(index < hashTable.length &&
                 hashTable[index] != null){
+
+            if(hashTable[index].getNodes().size() == 1){
+                return hashTable[index].getNodes().get(0).getValue();
+            }
 
             List<Node<K, V>> list = hashTable[index].getNodes();
             for (Node<K, V> node : list){
@@ -217,7 +229,6 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
         public int hashCode(){
             hash = 31;
             hash = hash * 17 + key.hashCode();
-            hash = hash * 17 + value.hashCode();
             return hash;
         }
 
