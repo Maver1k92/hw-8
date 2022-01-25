@@ -61,3 +61,4 @@ public class HashMap<K, V> {
             }
     }
 }
+https://www.youtube.com/watch?v=q2zNzC1fXaQ&list=PL7Bt6mWpiiza-bvhK-O1dNjIITX7nReHk&index=7
