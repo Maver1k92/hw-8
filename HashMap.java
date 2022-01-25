@@ -8,8 +8,11 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
         strings.put("c", "d");
         System.out.println(strings.get("a"));
         System.out.println(strings.size);
-        System.out.println(strings.remove("a"));
-        System.out.println(strings.get("a"));
+        //System.out.println(strings.remove("a"));
+        //System.out.println(strings.get("a"));
+        strings.clear();
+        System.out.println(strings.size);
+        strings.get("a");
     }
 
     private Node<K, V>[] hashTable;
@@ -126,7 +129,9 @@ public class HashMap<K, V>  implements HashMapMethods<K, V>{
 
     @Override
     public void clear() {
-
+        for (int i = 0; i < hashTable.length; i++){
+            hashTable[i] = null;
+        }
     }
 
     @Override
