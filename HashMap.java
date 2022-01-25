@@ -6,6 +6,20 @@ public class HashMap<K, V> {
     private int size = 0;
     private float threshold;
 
+    public void push(K key, V value){
+        Node<K,V> newNode = new Node<>(key,value);
+    }
+
+    private int hash(Node<K, V> node){
+        return node.hashCode() % hashTable.length;
+    }
+
+   private int hash(final  K key){
+        int hash = 31;
+        hash = hash * 17 + key.hashCode();
+       return hash % hashTable.length;
+   }
+
     private class Node<K, V>{
         private List<Node<K, V>> nodes;
         private int hash;
@@ -61,4 +75,3 @@ public class HashMap<K, V> {
             }
     }
 }
-https://www.youtube.com/watch?v=q2zNzC1fXaQ&list=PL7Bt6mWpiiza-bvhK-O1dNjIITX7nReHk&index=7
