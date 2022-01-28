@@ -61,14 +61,10 @@ public class Queue<E> implements QueueMethods<E> {
         }
     }
 
-    @Override
+ @Override
     public void clear() {
         E[] time = values;
-        values = (E[]) new Object[time.length];
-        for (int i = 0; i < values.length; i++) {
-            values[i] = null;
-        }
-
+        values = (E[]) new Object[0];
     }
 
     @Override
